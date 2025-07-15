@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio</title>
+  <style>
+    :root {
+      --admin-dark: #001a1a; /* Color más oscuro para administrador */
+      --admin-primary: #006666; /* Verde azulado más oscuro */
+      --admin-light: #009999; /* Versión más clara para hover */
+      --admin-accent: #3d8b8b; /* Color de acento más sobrio */
+      --admin-bg: #0a1515; /* Fondo más oscuro */
+      --white: #ffffff;
+      --gray-light: #bfc6c7;
+      --gray: #949797;
+    }
+
+    /* Navbar de administrador */
+    .admin-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, 
+        var(--admin-dark) 0%, 
+        var(--admin-bg) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      border-bottom: 2px solid var(--admin-accent);
+      position: relative;
+      z-index: 1000;
+    }
+
+    .admin-navbar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--admin-light) 50%, 
+        transparent 100%);
+    }
+
+    .admin-logo {
+      width: 150px;
+      height: auto;
+      background-color: var(--white);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .admin-logo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 153, 153, 0.3);
+      border-color: var(--admin-light);
+    }
+
+    .admin-nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .admin-nav-button {
+      background-color: var(--admin-primary);
+      color: var(--white);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-nav-button:hover {
+      background-color: var(--admin-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 153, 153, 0.3);
+    }
+
+    .admin-nav-button.active {
+      background-color: var(--admin-accent);
+      box-shadow: 0 4px 15px rgba(61, 139, 139, 0.4);
+    }
+
+    .admin-nav-button.logout {
+      background: linear-gradient(135deg, #8b0000, #a52a2a);
+      margin-left: 10px;
+    }
+
+    .admin-nav-button.logout:hover {
+      background: linear-gradient(135deg, #a52a2a, #c04040);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('img/fondo_admin2.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .content-card {
+      background-color: rgba(13, 29, 31, 0.92);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .product-section {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-image-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .product-image {
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--accent);
+    }
+
+    .product-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 20px 0;
+      color: var(--primary-light);
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .product-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+
+    .product-description {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--gray-light);
+      margin-bottom: 25px;
+    }
+
+    .location-details {
+      font-size: 18px;
+      margin: 8px 0;
+      color: var(--gray-light);
+    }
+
+    .amenities {
+      background-color: var(--primary-light);
+      color: var(--white);
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 15px 0;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .price-label {
+      font-size: 16px;
+      color: var(--gray-light);
+      margin: 0;
+    }
+
+    .price-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary-light);
+      margin: 5px 0 0 0;
+    }
+
+    @media (max-width: 1024px) {
+      .product-section {
+        flex-direction: column;
+      }
+      
+      .product-image {
+        max-height: 350px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .admin-navbar {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px 20px;
+      }
+      
+      .main-container {
+        padding: 10px;
+      }
+      
+      .content-card {
+        padding: 20px;
+      }
+      
+      .product-title {
+        font-size: 28px;
+      }
+      
+      .product-description {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .product-title {
+        font-size: 24px;
+      }
+      
+      .admin-nav-button {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="admin-navbar">
+    <img src="img/logo.png" alt="Logo altaltium" class="admin-logo">
+    
+    <div class="admin-nav-menu">
+      <a href="config_colonias.php" class="admin-nav-button">PRECIOS</a>
+      <a href="usuarios.php" class="admin-nav-button">USUARIOS</a>
+      <a href="ajustes.html" class="admin-nav-button">VALORES</a>
+      <a href="menu.html" class="admin-nav-button">MENÚ</a>
+      <a href="index.html" class="admin-nav-button logout">CERRAR SESIÓN</a>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="content-card">
+      
+
+      <div class="product-section">
+        <div class="product-info">
+          <h1 class="product-title">!Bienvenido¡</h1>
+          <p class="product-description">
+            Panel de control de C.O.D.E.C.<br><br>
+            *Gestion de usuarios. <br>
+            *Registros <br>
+            *Modificacion de precios. <br>
+            *Cambio de valores de calculo <br>
+          </p>
+        </div>
+        <div class="product-image-container">
+          <img src="img/producto2.jpeg" alt="Imagen del producto" class="product-image">
+        </div>
+      </div>
+      
+      
+
+  </div>
+
+</body>
+</html>

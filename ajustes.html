@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajustes de Honorarios</title>
+  <style>
+    :root {
+      --admin-dark: #001a1a;
+      --admin-primary: #006666;
+      --admin-light: #009999;
+      --admin-accent: #3d8b8b;
+      --admin-bg: #0a1515;
+      --primary-dark: #003035;
+      --primary: #008a8a;
+      --primary-light: #00cccc;
+      --accent: #52b3c0;
+      --dark-bg: #0d1d1f;
+      --darker-bg: #000000;
+      --light-bg: #fefcef;
+      --white: #ffffff;
+      --gray-light: #bfc6c7;
+      --gray: #949797;
+    }
+
+    /* Navbar de administrador */
+    .admin-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, 
+        var(--admin-dark) 0%, 
+        var(--admin-bg) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      border-bottom: 2px solid var(--admin-accent);
+      position: relative;
+      z-index: 1000;
+    }
+
+    .admin-navbar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--admin-light) 50%, 
+        transparent 100%);
+    }
+
+    .admin-logo {
+      width: 150px;
+      height: auto;
+      background-color: var(--white);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .admin-logo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 153, 153, 0.3);
+      border-color: var(--admin-light);
+    }
+
+    .admin-nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .admin-nav-button {
+      background-color: var(--admin-primary);
+      color: var(--white);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-nav-button:hover {
+      background-color: var(--admin-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 153, 153, 0.3);
+    }
+
+    .admin-nav-button.active {
+      background-color: var(--admin-accent);
+      box-shadow: 0 4px 15px rgba(61, 139, 139, 0.4);
+    }
+
+    .admin-nav-button.logout {
+      background: linear-gradient(135deg, #8b0000, #a52a2a);
+      margin-left: 10px;
+    }
+
+    .admin-nav-button.logout:hover {
+      background: linear-gradient(135deg, #a52a2a, #c04040);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('img/fondo_admin2.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .banner-container {
+      width: 100%;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 1400px;
+    }
+
+    .banner {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .main-container {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .content-card {
+      background-color: rgba(13, 29, 31, 0.92);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+      margin-top: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: var(--primary-light);
+      margin: 0 0 30px 0;
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    th, td {
+      border: 1px solid rgba(82, 179, 192, 0.3);
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      background-color: rgba(0, 138, 138, 0.1);
+      color: var(--white);
+      font-size: 14px;
+    }
+
+    td span {
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 8px;
+      color: var(--white);
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(82, 179, 192, 0.3);
+      border-color: var(--primary-light);
+    }
+
+    button {
+      display: block;
+      background-color: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin: 40px auto 0;
+      text-align: center;
+      min-width: 200px;
+    }
+
+    button:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      background-color: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 1440px) {
+      .banner-container, .main-container {
+        max-width: 95%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .admin-navbar {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px 20px;
+      }
+      
+      .main-container {
+        padding: 0 10px;
+      }
+      
+      .content-card {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 10px 8px;
+      }
+      
+      input[type="text"] {
+        padding: 6px;
+        font-size: 12px;
+      }
+
+      .banner {
+        max-height: 120px;
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      table {
+        font-size: 10px;
+      }
+      
+      th, td {
+        padding: 8px 4px;
+      }
+      
+      .banner {
+        max-height: 100px;
+      }
+      
+      .admin-nav-button {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="admin-navbar">
+    <img src="img/logo.png" alt="Logo" class="admin-logo">
+    
+    <div class="admin-nav-menu">
+      <a href="inicio.html" class="admin-nav-button">INICIO</a>
+      <a href="config.html" class="admin-nav-button">PRECIOS</a>
+      <a href="usuarios.php" class="admin-nav-button">USUARIOS</a>
+      <a href="menu.html" class="admin-nav-button">MENÚ</a>
+      <a href="index.html" class="admin-nav-button logout">CERRAR SESIÓN</a>
+    </div>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner-container">
+    <img src="img/banner.jpg" alt="Banner" class="banner">
+  </div>
+
+  <div class="main-container">
+    <div class="content-card">
+      <h1>Ajustes de Honorarios</h1>
+      <div id="tabla"></div>
+    </div>
+  </div>
+
+  <script>
+    function formatNumber(value) {
+      if (value === '') return '';
+      value = value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+      if (value === '.' || isNaN(value)) return '';
+      
+      const parts = value.split('.');
+      parts[0] = parseInt(parts[0], 10).toLocaleString('en-US');
+      return parts.length > 1 ? parts[0] + '.' + parts[1].substring(0, 6) : parts[0];
+    }
+
+    function unformatNumber(value) {
+      return value.replace(/,/g, '');
+    }
+
+    function handleInput(e) {
+      const pos = e.target.selectionStart;
+      const raw = e.target.value;
+      e.target.value = formatNumber(raw);
+      e.target.setSelectionRange(pos, pos);
+    }
+
+    fetch('obtener_datos.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById("tabla").innerHTML = `<div class="error-message">${data.error}</div>`;
+          return;
+        }
+
+        let html = `<form onsubmit="guardarCambios(); return false;"><table>
+          <tr>
+            <th>Tipo</th>
+            <th>Honorario Mínimo</th>
+            <th>Pendiente</th>
+            <th>Punto de Cambio</th>
+          </tr>`;
+
+        for (let key in data) {
+          const t = data[key];
+          html += `
+            <tr>
+              <td>
+                <span>${t.nombre}</span>
+                <input type="hidden" name="tipo[]" value="${t.nombre}">
+              </td>
+              <td><input type="text" name="minimo[]" value="${formatNumber(t.honorarioMinimo.toString())}" oninput="handleInput(event)"></td>
+              <td><input type="text" name="pendiente[]" value="${formatNumber(t.pendiente.toString())}" oninput="handleInput(event)"></td>
+              <td><input type="text" name="punto[]" value="${formatNumber(t.puntoCambio.toString())}" oninput="handleInput(event)"></td>
+            </tr>`;
+        }
+
+        html += `</table><button type="submit">Guardar Cambios</button></form>`;
+        document.getElementById("tabla").innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById("tabla").innerHTML = `<div class="error-message">Error al cargar los datos: ${error}</div>`;
+      });
+
+    function guardarCambios() {
+      const form = document.querySelector('form');
+      const formData = new FormData();
+
+      const tipos = form.querySelectorAll('[name="tipo[]"]');
+      const minimos = form.querySelectorAll('[name="minimo[]"]');
+      const pendientes = form.querySelectorAll('[name="pendiente[]"]');
+      const puntos = form.querySelectorAll('[name="punto[]"]');
+
+      tipos.forEach((el, i) => {
+        formData.append('tipo[]', el.value);
+        formData.append('minimo[]', unformatNumber(minimos[i].value));
+        formData.append('pendiente[]', unformatNumber(pendientes[i].value));
+        formData.append('punto[]', unformatNumber(puntos[i].value));
+      });
+
+      fetch('actualizar_datos.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.text())
+      .then(msg => alert(msg))
+      .catch(err => alert('Error: ' + err));
+    }
+  </script>
+</body>
+</html>

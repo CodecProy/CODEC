@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - ALTALTIUM</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('img/fondo.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .logo-global {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 140px;
+      background-color: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .container {
+      background-color: rgba(13, 29, 31, 0.92);
+      width: 400px;
+      margin: 140px auto;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    .header {
+      background-color: #003035;
+      padding: 12px 0;
+      color: #fefcef;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 8px 8px 0 0;
+      margin: -40px -40px 30px -40px;
+      border-bottom: 2px solid #52b3c0;
+    }
+
+    h1 {
+      color: #00cccc;
+      font-size: 26px;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .input-group {
+      position: relative;
+      width: 85%;
+      margin: 15px auto;
+    }
+
+    .input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #52b3c0;
+      background-color: #ffffff;
+      color: #000000;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    .input::placeholder {
+      color: #949797;
+    }
+
+    .btn {
+      background-color: #00cccc;
+      color: #000000;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+      width: 85%;
+    }
+
+    .btn:hover {
+      background-color: #008a8a;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #949797;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .toggle-password:hover {
+      color: #00cccc;
+    }
+
+    .toggle-password i {
+      font-size: 18px;
+    }
+
+    /* Estilo para el icono de ojo (usando Unicode) */
+    .eye-icon::after {
+      content: "👁";
+    }
+    .eye-slash-icon::after {
+      content: "👁‍🗨";
+    }
+
+    /* Estilos para mensajes de error */
+    .error-message {
+      color: #ff6b6b;
+      background-color: rgba(255, 107, 107, 0.1);
+      border: 1px solid #ff6b6b;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 15px auto;
+      width: 85%;
+      font-size: 14px;
+      text-align: center;
+      display: none; /* Inicialmente oculto */
+    }
+
+    .success-message {
+      color: #51cf66;
+      background-color: rgba(81, 207, 102, 0.1);
+      border: 1px solid #51cf66;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 15px auto;
+      width: 85%;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* Animación para el mensaje de error */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .show-error {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="img/logo.png" alt="Logo" class="logo-global">
+
+  <div class="container">
+    <div class="header">LOGIN</div>
+    <h1>ALTALTIUM</h1>
+    
+    <!-- Mensaje de error -->
+    <div class="error-message" id="errorMessage">
+      Usuario o contraseña no registrados, favor de comunicarse con el administrador
+    </div>
+    
+    <!-- Formulario con conexión PHP -->
+    <form action="validate.php" method="POST" id="loginForm">
+      <div class="input-group">
+        <input type="text" class="input" placeholder="Usuario" name="username" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="password" id="password" class="input" placeholder="Contraseña" name="password" required>
+        <button type="button" class="toggle-password eye-icon" id="togglePassword"></button>
+      </div>
+      
+      <button type="submit" name="submit" class="btn">Iniciar sesión</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+      const loginForm = document.querySelector('#loginForm');
+      const errorMessage = document.querySelector('#errorMessage');
+      
+      // Manejar el toggle de la contraseña
+      togglePassword.addEventListener('click', function() {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('eye-icon');
+        this.classList.toggle('eye-slash-icon');
+      });
+      
+      // Verificar si hay un error en la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('error')) {
+        errorMessage.classList.add('show-error');
+      }
+      
+      // Validación del formulario antes de enviar
+      loginForm.addEventListener('submit', function(e) {
+        const inputs = this.querySelectorAll('input[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = '#ff6b6b';
+          } else {
+            input.style.borderColor = '#52b3c0';
+          }
+        });
+        
+        if (!isValid) {
+          e.preventDefault();
+          errorMessage.textContent = 'Por favor complete todos los campos';
+          errorMessage.classList.add('show-error');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

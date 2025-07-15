@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honorarios Altaltium</title>
+  <style>
+    :root {
+      --primary-dark: #003035;
+      --primary: #008a8a;
+      --primary-light: #00cccc;
+      --accent: #52b3c0;
+      --dark-bg: #0d1d1f;
+      --darker-bg: #000000;
+      --light-bg: #fefcef;
+      --white: #ffffff;
+      --gray-light: #bfc6c7;
+      --gray: #949797;
+      --yellow-highlight: #ffeb3b;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --table-border: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('img/fondo.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Navbar mejorado */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(135deg, 
+        rgba(13, 29, 31, 0.95) 0%, 
+        rgba(0, 48, 53, 0.92) 50%, 
+        rgba(13, 29, 31, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      border-bottom: 2px solid var(--accent);
+      position: relative;
+      z-index: 1000;
+    }
+
+    .top-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--primary-light) 20%, 
+        var(--accent) 50%, 
+        var(--primary-light) 80%, 
+        transparent 100%);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 150px;
+      height: auto;
+      background-color: var(--white);
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .brand-logo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 204, 204, 0.3);
+      border-color: var(--primary-light);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--gray-light);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-button {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid transparent;
+    }
+
+    .nav-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+      transition: left 0.5s ease;
+    }
+
+    .nav-button:hover::before {
+      left: 100%;
+    }
+
+    .nav-button:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 204, 204, 0.4);
+      border-color: var(--primary-light);
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, var(--accent), var(--primary-light));
+      box-shadow: 0 8px 25px rgba(0, 204, 204, 0.5);
+      border-color: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .nav-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary-light);
+      border-radius: 2px;
+    }
+
+    .nav-button.logout {
+      background: linear-gradient(135deg, #d32f2f, #f44336);
+      margin-left: 10px;
+    }
+
+    .nav-button.logout:hover {
+      background: linear-gradient(135deg, #f44336, #ff5722);
+      box-shadow: 0 8px 25px rgba(244, 67, 54, 0.4);
+    }
+
+    .page-indicator {
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary-light);
+    }
+
+    .nav-separator {
+      width: 1px;
+      height: 30px;
+      background: linear-gradient(180deg, 
+        transparent 0%, 
+        var(--accent) 50%, 
+        transparent 100%);
+      margin: 0 10px;
+    }
+
+    .main-container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .content-card {
+      background-color: rgba(13, 29, 31, 0.92);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--accent);
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--primary-light);
+      margin: 0 0 40px 0;
+    }
+
+    .form-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .section-table {
+      background-color: rgba(0, 48, 53, 0.9);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--accent);
+    }
+
+    .section-header {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .table-content {
+      color: var(--white);
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .table-cell {
+      padding: 12px 15px;
+      border-right: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      background-color: rgba(13, 29, 31, 0.8);
+    }
+
+    .table-cell:last-child {
+      border-right: none;
+    }
+
+    .table-cell input {
+      width: 100%;
+      border: none;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark-bg);
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .table-cell input:focus {
+      outline: 2px solid var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(0, 204, 204, 0.3);
+    }
+
+    .highlighted-row {
+      background-color: rgba(255, 235, 59, 0.3);
+    }
+
+    .highlighted-row .table-cell {
+      background-color: rgba(255, 235, 59, 0.4);
+      color: var(--dark-bg);
+      font-weight: 600;
+    }
+
+    .four-column-row {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .four-column-row .table-cell {
+      text-align: center;
+    }
+
+    .three-column-row {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .three-column-row .table-cell {
+      text-align: center;
+    }
+
+    .percentage-cell {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .cesion-table-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .cesion-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .tipo-selector-card {
+      background-color: rgba(0, 48, 53, 0.9);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--accent);
+    }
+
+    .selector-header {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .selector-content {
+      padding: 20px;
+      background-color: rgba(13, 29, 31, 0.8);
+    }
+
+    .tipo-select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--gray);
+      border-radius: 8px;
+      background-color: var(--white);
+      color: var(--dark-bg);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tipo-select:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(0, 204, 204, 0.2);
+    }
+
+    .info-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .info-card {
+      background-color: rgba(0, 48, 53, 0.9);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      color: var(--white);
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-card-label {
+      font-size: 14px;
+      color: var(--gray-light);
+      margin-bottom: 5px;
+    }
+
+    .info-card-value {
+      font-size: 16px;
+      color: var(--primary-light);
+      font-weight: 700;
+    }
+
+    .precio-total-card {
+      background-color: rgba(0, 48, 53, 0.9);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 3px solid var(--primary-light);
+    }
+
+    .precio-total-label {
+      font-size: 18px;
+      color: var(--gray-light);
+      margin: 0 0 15px 0;
+      font-weight: 600;
+    }
+
+    .precio-total-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary-light);
+      margin: 0;
+      text-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
+    }
+
+    .action-button {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      margin-top: 20px;
+    }
+
+    .action-button:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 204, 204, 0.4);
+    }
+
+    @media (max-width: 1200px) {
+      .top-bar {
+        padding: 20px 30px;
+      }
+      
+      .brand-text {
+        display: none;
+      }
+      
+      .brand-logo {
+        width: 130px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .form-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .right-sidebar {
+        order: -1;
+      }
+      
+      .top-bar {
+        padding: 15px 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        align-items: stretch;
+      }
+      
+      .navbar-brand {
+        justify-content: center;
+        order: -1;
+      }
+      
+      .nav-menu {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      
+      .nav-separator {
+        display: none;
+      }
+
+      .main-container {
+        padding: 15px;
+      }
+
+      .content-card {
+        padding: 25px;
+      }
+
+      .table-row, .cesion-table-row {
+        grid-template-columns: 1fr;
+      }
+
+      .three-column-row, .four-column-row {
+        grid-template-columns: 1fr;
+      }
+
+      .table-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--table-border);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-button {
+        padding: 10px 16px;
+        font-size: 12px;
+      }
+      
+      .brand-logo {
+        width: 100px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .top-bar {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    .nav-button:focus {
+      outline: 3px solid var(--primary-light);
+      outline-offset: 2px;
+    }
+
+    .tipo-select:focus {
+      outline: 3px solid var(--primary-light);
+      outline-offset: 2px;
+    }
+
+    .navbar-brand:hover .brand-title {
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="top-bar">
+    <div class="navbar-brand">
+      <img src="img/logo.png" alt="Logo C.O.D.E.C." class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-title">C.O.D.E.C.</div>
+        <div class="brand-subtitle">Sistema de Honorarios</div>
+      </div>
+    </div>
+    
+    <div class="nav-menu">
+      <a href="mapa.php" class="nav-button">
+        <span>Mapa de calor</span>
+      </a>
+      
+      <div class="nav-separator"></div>
+      
+      <a href="menu.html" class="nav-button active">
+        <span>Menú</span>
+        <div class="page-indicator"></div>
+      </a>
+      
+      <div class="nav-separator"></div>
+      
+      <a href="index.html" class="nav-button logout">
+        <span>Cerrar sesión</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="content-card">
+      <h1 class="page-title">CÁLCULO DE HONORARIOS</h1>
+      
+      <div class="form-layout">
+        <div class="left-section">
+          <div class="section-table">
+            <div class="section-header">TIPO</div>
+            <div class="table-content">
+              <div class="table-row">
+                <div class="table-cell">Valor comercial</div>
+                <div class="table-cell">
+                  <input type="text" placeholder="$0.00" id="valorComercial">
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Costo de cesión</div>
+    <div class="table-cell">
+                  <input type="text" placeholder="$0.00" id="costoCesion">
+                </div>
+              </div>
+            </div>
+          </div>
+
+ Facade
+          <div class="section-table">
+            <div class="section-header">VALOR DE INTERÉS</div>
+            <div class="table-content">
+              <div class="table-row">
+                <div class="table-cell">Valor judicial aproximado</div>
+                <div class="table-cell" id="valorJudicial">$0.00</div>
+              </div>
+              <div class="table-row highlighted-row">
+                <div class="table-cell">Honorarios</div>
+                <div class="table-cell" id="honorarios">$0.00</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Costo total</div>
+                <div class="table-cell" id="costoTotal">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="section-table">
+            <div class="section-header">MODALIDAD DE CONTADO</div>
+            <div class="table-content">
+              <div class="table-row four-column-row">
+                <div class="table-cell">Concepto</div>
+                <div class="table-cell">Descuento 10%</div>
+                <div class="table-cell">Valor</div>
+                <div class="table-cell">Total 90%</div>
+              </div>
+              <div class="table-row four-column-row">
+                <div class="table-cell">Pago Único</div>
+                <div class="table-cell" id="valorPagoUnico">$0.00</div>
+                <div class="table-cell percentage-cell">90%</div>
+                <div class="table-cell" id="totalAlContacto">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="section-table">
+            <div class="section-header">MODALIDAD DE PAGO</div>
+            <div class="table-content">
+              <div class="table-row three-column-row">
+                <div class="table-cell">Etapa</div>
+                <div class="table-cell">Valor</div>
+                <div class="table-cell">Porcentaje</div>
+              </div>
+              <div class="table-row three-column-row">
+                <div class="table-cell">A la firma</div>
+                <div class="table-cell" id="valorFirma">$0.00</div>
+                <div class="table-cell percentage-cell">75%</div>
+              </div>
+              <div class="table-row three-column-row">
+                <div class="table-cell">A la entrega</div>
+                <div class="table-cell" id="valorEntrega">$0.00</div>
+                <div class="table-cell percentage-cell">25%</div>
+              </div>
+              <div class="table-row three-column-row">
+                <div class="table-cell">Total</div>
+                <div class="table-cell" id="valorTotalPago">$0.00</div>
+                <div class="table-cell percentage-cell">100%</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="section-table">
+            <div class="section-header">Extrajudicial</div>
+            <div class="table-content">
+              <div class="table-row">
+                <div class="table-cell">Valor Comercial</div>
+                <div class="table-cell" id="valorComercialExtra">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="section-table">
+            <div class="section-header">Cesión de derechos de cobranza</div>
+            <div class="table-content">
+              <div class="table-row">
+                <div class="table-cell">Var</div>
+                <div class="table-cell">Valor</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Cotización</div>
+                <div class="table-cell" id="cotizacionCesion">$0.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-sidebar">
+          <!-- Selector de tipo -->
+          <div class="tipo-selector-card">
+            <div class="selector-header" id="selectorHeader">TIPO</div>
+            <div class="selector-content">
+              <select class="tipo-select" id="tipoSelect">
+                <option value="">Seleccionar tipo...</option>
+                <!-- Options will be populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Precio total - ahora aparece segundo -->
+          <div class="precio-total-card">
+            <p class="precio-total-label" id="precioTotalLabel">Precio DEL TIPO:</p>
+            <p class="precio-total-value" id="precioTotal">$0.00</p>
+          </div>
+
+          <!-- Tarjetas de información - ahora aparecen tercero -->
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-card-label">Porcentaje del valor comercial</div>
+              <div class="info-card-value" id="porcentajeComercial">0%</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-label">Ganancia</div>
+              <div class="info-card-value" id="ganancia">0%</div>
+            </div>
+          </div>
+
+          <!-- Botón de imprimir - se mantiene al final -->
+          <button class="action-button" id="imprimirBtn">IMPRIMIR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    // Variable global para almacenar los tipos de servicios
+    let tiposServicios = {};
+    let datosCargados = false;
+
+    // Elementos del DOM
+    const tipoSelect = document.getElementById('tipoSelect');
+    const valorComercialInput = document.getElementById('valorComercial');
+    const costoCesionInput = document.getElementById('costoCesion');
+    const imprimirBtn = document.getElementById('imprimirBtn');
+    const selectorHeader = document.getElementById('selectorHeader');
+    const precioTotalLabel = document.getElementById('precioTotalLabel');
+    const valorJudicialEl = document.getElementById('valorJudicial');
+    const honorariosEl = document.getElementById('honorarios');
+    const costoTotalEl = document.getElementById('costoTotal');
+    const valorPagoUnicoEl = document.getElementById('valorPagoUnico');
+    const totalAlContactoEl = document.getElementById('totalAlContacto');
+    const valorFirmaEl = document.getElementById('valorFirma');
+    const valorEntregaEl = document.getElementById('valorEntrega');
+    const valorTotalPagoEl = document.getElementById('valorTotalPago');
+    const valorComercialExtraEl = document.getElementById('valorComercialExtra');
+    const cotizacionCesionEl = document.getElementById('cotizacionCesion');
+    const porcentajeComercialEl = document.getElementById('porcentajeComercial');
+    const gananciaEl = document.getElementById('ganancia');
+    const precioTotalEl = document.getElementById('precioTotal');
+
+    // Función para cargar los tipos desde la base de datos
+    async function cargarTiposServicios() {
+      try {
+        const response = await fetch('calculadora.php');
+        if (!response.ok) {
+          throw new Error('Error al cargar los tipos de servicios');
+        }
+        const data = await response.json();
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        tiposServicios = data;
+        datosCargados = true;
+        
+        // Actualizar el select con las opciones
+        tipoSelect.innerHTML = '<option value="">Seleccionar tipo...</option>';
+        
+        for (const [key, tipo] of Object.entries(tiposServicios)) {
+          const option = document.createElement('option');
+          option.value = key;
+          option.textContent = tipo.nombre;
+          tipoSelect.appendChild(option);
+        }
+        
+        console.log('Tipos de servicios cargados:', tiposServicios);
+      } catch (error) {
+        console.error('Error al cargar tipos:', error);
+        alert('Error al cargar los tipos de cálculo. Por favor recarga la página.');
+      }
+    }
+
+    // Llamar a la función cuando se carga la página
+    document.addEventListener('DOMContentLoaded', cargarTiposServicios);
+
+    // Funciones de formato
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN'
+      }).format(amount || 0);
+    }
+
+    function formatNumber(num) {
+      return new Intl.NumberFormat('es-MX').format(num || 0);
+    }
+
+    function parseInputValue(value) {
+      return parseFloat(value.replace(/,/g, '')) || 0;
+    }
+
+    function formatInputInRealTime(input) {
+      const cursorPos = input.selectionStart;
+      const value = input.value;
+      const numericValue = value.replace(/[^\d]/g, '');
+      
+      if (numericValue === '') {
+        input.value = '';
+        return;
+      }
+      
+      const number = parseInt(numericValue);
+      const formattedValue = formatNumber(number);
+      
+      const originalLength = value.length;
+      const newLength = formattedValue.length;
+      const newCursorPos = cursorPos + (newLength - originalLength);
+      
+      input.value = formattedValue;
+      input.setSelectionRange(newCursorPos, newCursorPos);
+    }
+
+    function getInputValue(id) {
+      const input = document.getElementById(id);
+      return parseInputValue(input.value);
+    }
+
+    // Funciones de cálculo
+    function calcularHonorarios(valorComercial, tipoSeleccionado) {
+      if (!valorComercial || !tipoSeleccionado || !tiposServicios[tipoSeleccionado]) return 0;
+      
+      const servicio = tiposServicios[tipoSeleccionado];
+      
+      if (valorComercial <= servicio.puntoCambio) {
+        return servicio.honorarioMinimo;
+      }
+      
+      return servicio.honorarioMinimo + (valorComercial - servicio.puntoCambio) * servicio.pendiente;
+    }
+
+    function calcularPorcentajeComercial(costoTotal, valorComercial) {
+      if (!valorComercial || valorComercial === 0) return 0;
+      return (costoTotal / valorComercial) * 100;
+    }
+
+    function calcularPorcentajeGanancia(porcentajeComercial) {
+      return 100 - porcentajeComercial;
+    }
+
+    function actualizarHeaders(tipoSeleccionado) {
+      if (tipoSeleccionado && tiposServicios[tipoSeleccionado]) {
+        const nombreTipo = tiposServicios[tipoSeleccionado].nombre.toUpperCase();
+        selectorHeader.textContent = nombreTipo;
+        precioTotalLabel.textContent = `Precio de ${tiposServicios[tipoSeleccionado].nombre}:`;
+      } else {
+        selectorHeader.textContent = 'TIPO';
+        precioTotalLabel.textContent = 'Precio DEL TIPO:';
+      }
+    }
+
+    function calcularValores() {
+      if (!datosCargados) {
+        console.log('Esperando a que se carguen los datos...');
+        return;
+      }
+
+      const tipoSeleccionado = tipoSelect.value;
+      const valorComercial = getInputValue('valorComercial');
+      const costoCesion = getInputValue('costoCesion');
+      
+      actualizarHeaders(tipoSeleccionado);
+      
+      if (!tipoSeleccionado || !valorComercial) {
+        limpiarCalculos();
+        return;
+      }
+
+      const servicio = tiposServicios[tipoSeleccionado];
+      const honorarios = calcularHonorarios(valorComercial, tipoSeleccionado);
+      const valorJudicial = valorComercial * (2/3);
+      const costoTotalCalc = honorarios + costoCesion;
+      const descuento10Porciento = honorarios * 0.10;
+      const valorPagoUnico = honorarios * 0.90;
+      const totalAlContacto = valorPagoUnico + costoCesion;
+      const valorFirma = honorarios * 0.75;
+      const valorEntrega = honorarios * 0.25;
+      const porcentajeComercial = calcularPorcentajeComercial(costoTotalCalc, valorComercial);
+      const porcentajeGanancia = calcularPorcentajeGanancia(porcentajeComercial);
+      const valorComercialExtra = servicio.valorComercialExtrajudicial || valorComercial;
+      const cotizacionCesion = valorComercial * 0.50;
+      
+      // Actualizar los elementos del DOM
+      valorJudicialEl.textContent = formatCurrency(valorJudicial);
+      honorariosEl.textContent = formatCurrency(honorarios);
+      costoTotalEl.textContent = formatCurrency(costoTotalCalc);
+      valorPagoUnicoEl.textContent = formatCurrency(descuento10Porciento);
+      totalAlContactoEl.textContent = formatCurrency(totalAlContacto);
+      valorFirmaEl.textContent = formatCurrency(valorFirma);
+      valorEntregaEl.textContent = formatCurrency(valorEntrega);
+      valorTotalPagoEl.textContent = formatCurrency(honorarios);
+      valorComercialExtraEl.textContent = formatCurrency(valorComercialExtra);
+      cotizacionCesionEl.textContent = formatCurrency(cotizacionCesion);
+      porcentajeComercialEl.textContent = porcentajeComercial.toFixed(2) + '%';
+      gananciaEl.textContent = porcentajeGanancia.toFixed(2) + '%';
+      precioTotalEl.textContent = formatCurrency(costoTotalCalc);
+    }
+
+    function limpiarCalculos() {
+      const elementos = [
+        valorJudicialEl, honorariosEl, costoTotalEl, valorPagoUnicoEl, totalAlContactoEl,
+        valorFirmaEl, valorEntregaEl, valorTotalPagoEl, valorComercialExtraEl, 
+        cotizacionCesionEl, precioTotalEl
+      ];
+      
+      elementos.forEach(el => el.textContent = '$0.00');
+      porcentajeComercialEl.textContent = '0%';
+      gananciaEl.textContent = '0%';
+    }
+
+    function imprimirResultados() {
+      const tipoSeleccionado = tipoSelect.value;
+      
+      if (!tipoSeleccionado) {
+        alert('Por favor seleccione un tipo antes de imprimir');
+        return;
+      }
+
+      window.print();
+    }
+
+    // Event listeners
+    imprimirBtn.addEventListener('click', imprimirResultados);
+
+    [valorComercialInput, costoCesionInput].forEach(input => {
+      input.addEventListener('input', function() {
+        formatInputInRealTime(this);
+        calcularValores();
+      });
+      
+      input.addEventListener('keydown', function(e) {
+        if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+          return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    tipoSelect.addEventListener('change', calcularValores);
+</script>
+</body>
+</html>
