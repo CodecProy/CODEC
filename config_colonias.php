@@ -11,7 +11,7 @@ error_reporting(0);
 ini_set('display_errors', 0);
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     die("Error de conexión: " . $e->getMessage());
@@ -139,30 +139,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_colonia'])) {
             ':id' => $coloniaId
         ]);
         
-        // Actualizar amenidades
-        $updateAmenidades = "INSERT INTO amenidades_codec (
-            colonia_id,
-            amenidad_vialidad,
-            amenidad_escuelas,
-            amenidad_hospitales,
-            amenidad_comercio,
-            amenidad_otros,
-            categoria
-        ) VALUES (
-            :id,
-            :vialidad,
-            :escuelas,
-            :hospitales,
-            :comercio,
-            :otros,
-            :categoria
-        ) ON DUPLICATE KEY UPDATE
-            amenidad_vialidad = VALUES(amenidad_vialidad),
-            amenidad_escuelas = VALUES(amenidad_escuelas),
-            amenidad_hospitales = VALUES(amenidad_hospitales),
-            amenidad_comercio = VALUES(amenidad_comercio),
-            amenidad_otros = VALUES(amenidad_otros),
-            categoria = VALUES(categoria)";
+        // Actualizar amenidades - CORRECCIÓN CLAVE: usar colonia_id en lugar de id_amenidad
+        $updateAmenidades = "UPDATE amenidades_codec SET
+            amenidad_vialidad = :vialidad,
+            amenidad_escuelas = :escuelas,
+            amenidad_hospitales = :hospitales,
+            amenidad_comercio = :comercio,
+            amenidad_otros = :otros,
+            categoria = :categoria
+            WHERE colonia_id = :id";
         
         $stmt = $conn->prepare($updateAmenidades);
         $stmt->execute([
@@ -1214,7 +1199,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'obtenerAlcaldias') {
       
       setTimeout(() => {
         refs.notification.classList.remove('show');
-      }, 3000);
+      }, 5000);
     }
 
     function toggleEditMode() {
@@ -1233,12 +1218,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'obtenerAlcaldias') {
       const formData = new FormData(refs.updateForm);
       
       // Procesar números formateados
-      formData.set('promedio', parseFormattedNumber(formData.get('promedio')));
-      formData.set('propiedades', parseFormattedNumber(formData.get('propiedades')));
-      formData.set('heyhome', parseFormattedNumber(formData.get('heyhome')));
-      formData.set('clau', parseFormattedNumber(formData.get('clau')));
-      formData.set('mudafy', parseFormattedNumber(formData.get('mudafy')));
-      formData.set('altaltium', parseFormattedNumber(formData.get('altaltium')));
+      formData.set('promedio', parseFormattedNumber(formData.get('promedio')) || '');
+      formData.set('propiedades', parseFormattedNumber(formData.get('propiedades')) || '');
+      formData.set('heyhome', parseFormattedNumber(formData.get('heyhome')) || '');
+      formData.set('clau', parseFormattedNumber(formData.get('clau')) || '');
+      formData.set('mudafy', parseFormattedNumber(formData.get('mudafy')) || '');
+      formData.set('altaltium', parseFormattedNumber(formData.get('altaltium')) || '');
       
       const coloniaId = formData.get('colonia_id');
       
@@ -1248,7 +1233,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'obtenerAlcaldias') {
           body: formData
         });
         
-        if (!response.ok) throw new Error('Error en la actualización');
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
+        }
         
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
@@ -1268,7 +1255,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'obtenerAlcaldias') {
           showNotification('Cambios guardados correctamente');
           toggleEditMode(); // Salir del modo edición
         } else {
-          throw new Error(result.message || 'Error desconocido');
+          throw new Error(result.message || 'Error desconocido al guardar');
         }
       } catch (error) {
         console.error('Error al guardar cambios:', error);
@@ -1309,6 +1296,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'obtenerAlcaldias') {
     // Validación de números en inputs
     document.querySelectorAll('input[data-type="number"]').forEach(input => {
       input.addEventListener('input', () => formatNumberInput(input));
+    });
+    
+    // Cerrar sugerencias al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (!refs.searchInput.contains(e.target) && 
+          !refs.suggestionsDropdown.contains(e.target)) {
+        refs.suggestionsDropdown.style.display = 'none';
+      }
     });
   </script>
 </body>
