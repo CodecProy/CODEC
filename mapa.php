@@ -1284,7 +1284,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       </div>
     </div>
     <nav class="nav-menu">
-      <a href="honorarios.html" class="nav-button active">
+      <a href="hon.html" class="nav-button active">
         <span>HONORARIOS</span>
         <div class="page-indicator"></div>
       </a>

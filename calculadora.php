@@ -1,10 +1,16 @@
 <?php
+// Encabezados CORS para permitir acceso
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
-$servername = "sql302.infinityfree.com";
+// CONFIGURACIÓN PARA INFINITY FREE
+$servername = "localhost";
 $username = "if0_39478618";
 $password = "C3rrEiwVe81HS1";
 $dbname = "if0_39478618_altaltium";
+
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
