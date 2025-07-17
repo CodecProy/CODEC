@@ -6,10 +6,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 // CONFIGURACIÓN PARA INFINITY FREE
-$servername = "localhost";
-$username = "if0_39478618";
-$password = "C3rrEiwVe81HS1";
-$dbname = "if0_39478618_altaltium";
+$servername = "sql302.infinityfree.com";
+$username = "if0_39495455";
+$password = "bSf0NYLYcmfaFZf";
+$dbname = "if0_39495455_altaltium";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);

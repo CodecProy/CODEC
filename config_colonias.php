@@ -1,11 +1,10 @@
 <?php
 // ======================================================================
 // CONFIGURACIÓN DE CONEXIÓN A LA BASE DE DATOS
-// ======================================================================
 $servername = "sql302.infinityfree.com";
-$username = "if0_39478618";
-$password = "C3rrEiwVe81HS1";
-$dbname = "if0_39478618_altaltium";
+$username = "if0_39495455";
+$password = "bSf0NYLYcmfaFZf";
+$dbname = "if0_39495455_altaltium";
 // Desactivar visualización de errores para evitar interferencia con JSON
 error_reporting(0);
 ini_set('display_errors', 0);

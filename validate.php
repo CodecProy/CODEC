@@ -3,9 +3,9 @@ session_start();
 
 // Configuración de la base de datos
 $servername = "sql302.infinityfree.com";
-$username = "if0_39478618";
-$password = "C3rrEiwVe81HS1";
-$dbname = "if0_39478618_altaltium";
+$username = "if0_39495455";
+$password = "bSf0NYLYcmfaFZf";
+$dbname = "if0_39495455_altaltium";
 
 // Establecer conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
