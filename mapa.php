@@ -137,6 +137,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
   <meta name="description" content="Mapa de calor interactivo para explorar precios y amenidades por colonia en México.">
   <meta name="author" content="C.O.D.E.C.">
   <title>C.O.D.E.C. - Mapa de Calor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary-dark: #003035;
@@ -171,16 +172,29 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       color: var(--white);
       min-height: 100vh;
       overflow-x: hidden;
-      line-height: 1.5;
+      line-height: 1.6;
       position: relative;
       z-index: 0;
     }
 
+    /* Capa de superposición para mejorar la legibilidad */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 29, 31, 0.92);
+      z-index: -1;
+    }
+
+    /* NAVBAR MEJORADO */
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 2.5rem;
+      padding: 1rem 2rem;
       background: linear-gradient(135deg, 
         rgba(13, 29, 31, 0.95) 0%, 
         rgba(0, 48, 53, 0.92) 50%, 
@@ -215,10 +229,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .brand-logo {
-      width: 140px;
+      width: 120px;
       height: auto;
       background-color: var(--white);
-      padding: 0.75rem;
+      padding: 0.5rem;
       border-radius: 12px;
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
@@ -238,7 +252,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .brand-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--primary-light);
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -246,7 +260,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .brand-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--gray-light);
       font-weight: 500;
       text-transform: uppercase;
@@ -264,9 +278,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       color: var(--white);
       border: none;
       padding: 0.75rem 1.5rem;
-      border-radius: var(--border-radius);
+      border-radius: 50px;
       cursor: pointer;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       font-weight: 600;
       text-decoration: none;
       text-transform: uppercase;
@@ -274,7 +288,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
       position: relative;
-      overflow: visible;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-width: 140px;
+      justify-content: center;
     }
 
     .nav-button::before {
@@ -288,7 +308,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
         transparent, 
         rgba(255, 255, 255, 0.2), 
         transparent);
-      transition: left 0.5s ease;
+      transition: left 0.6s ease;
     }
 
     .nav-button:hover::before {
@@ -297,8 +317,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
 
     .nav-button:hover {
       background: linear-gradient(135deg, var(--primary-light), var(--accent));
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 204, 204, 0.4);
     }
 
     .nav-button.active {
@@ -313,7 +333,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       bottom: -2px;
       left: 0;
       right: 0;
-      height: 2px;
+      height: 3px;
       background: var(--primary-light);
       border-radius: 2px;
     }
@@ -324,28 +344,26 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
 
     .nav-button.logout:hover {
       background: linear-gradient(135deg, #f44336, #ff5722);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
     }
 
     .nav-separator {
-      width: 1px;
-      height: 1.5rem;
+      width: 2px;
+      height: 2rem;
       background: linear-gradient(180deg, 
         transparent 0%, 
         var(--accent) 50%, 
         transparent 100%);
       margin: 0 0.5rem;
+      border-radius: 2px;
     }
 
     .main-container {
       max-width: 1400px;
-      margin: 2rem auto;
+      margin: 1.5rem auto;
       padding: 0 1.5rem;
       position: relative;
       z-index: 2;
-      background-color: rgba(13, 29, 31, 0.95);
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
     }
 
     .tabs-container {
@@ -375,6 +393,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       color: var(--gray-light);
       letter-spacing: 0.6px;
       transition: var(--transition);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .tab-button i {
+      font-size: 1.1rem;
     }
 
     .tab-button.active {
@@ -473,6 +500,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       letter-spacing: 0.6px;
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .filter-button:hover {
@@ -485,7 +515,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     .results-container {
       width: 100%;
       overflow-x: auto;
-      margin-top: 1.5rem;
+      margin-top: 20px;
       display: none;
     }
 
@@ -527,7 +557,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     /* Estilo para el mapa grande */
     .map-section.large {
       flex: 3;
-      min-height: 500px;
+      min-height: 500px; /* Tamaño más equilibrado */
+      display: flex;
+      flex-direction: column;
     }
 
     .general-content {
@@ -542,30 +574,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       backdrop-filter: blur(8px);
       border-radius: 12px;
       display: none;
-    }
-
-    @media (min-width: 768px) {
-      .filters-row {
-        justify-content: flex-start;
-      }
-      .filters-actions {
-        margin-top: 0;
-      }
-      .filter-button {
-        margin-left: auto;
-      }
-    }
-
-    @media (max-width: 767px) {
-      .filters-row {
-        flex-direction: column;
-      }
-      .filters-actions {
-        justify-content: stretch;
-      }
-      .filter-button {
-        width: 100%;
-      }
     }
 
     .search-section {
@@ -647,6 +655,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       font-size: 0.875rem;
       border-bottom: 1px solid rgba(82, 179, 192, 0.2);
       transition: var(--transition);
+      display: flex;
+      flex-direction: column;
     }
 
     .suggestion-item:last-child {
@@ -695,19 +705,26 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       background-color: rgba(13, 29, 31, 0.95);
       backdrop-filter: blur(8px);
       border-radius: 12px;
+      box-shadow: var(--shadow-md);
     }
 
     .info-panel {
       flex: 1;
       max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
     .location-header {
-      margin-bottom: 2rem;
+      background: linear-gradient(135deg, rgba(0, 204, 204, 0.15) 0%, rgba(0, 204, 204, 0.1) 100%);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--primary-light);
     }
 
     .location-title {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       margin: 0 0 0.5rem 0;
       color: var(--primary-light);
@@ -715,7 +732,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .location-subtitle {
-      font-size: 1.125rem;
+      font-size: 1.1rem;
       color: var(--gray-light);
       margin: 0 0 0.375rem 0;
       font-weight: 500;
@@ -728,7 +745,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .amenities-section {
-      margin: 2rem 0;
+      margin: 0;
     }
 
     .amenities-button {
@@ -744,6 +761,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       letter-spacing: 0.6px;
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     .amenities-button:hover {
@@ -757,7 +779,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       border-radius: 12px;
       padding: 1.5rem;
       border-left: 4px solid var(--primary-light);
-      margin-top: 2rem;
+      text-align: center;
     }
 
     .price-label {
@@ -781,22 +803,29 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       flex-direction: column;
       position: relative;
       z-index: 1;
+      height: 100%;
+      min-height: 500px;
     }
 
     .map-container {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: var(--shadow-md);
       background-color: var(--gray-light);
-      min-height: 400px;
+      min-height: 500px;
       position: relative;
       z-index: 0;
+      height: 100%;
+      border: 1px solid rgba(82, 179, 192, 0.4);
     }
 
     #map {
       width: 100%;
       height: 100%;
+      flex: 1;
       border: none;
       transition: opacity 0.3s ease;
       position: relative;
@@ -806,6 +835,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     #largeMap {
       width: 100%;
       height: 100%;
+      flex: 1;
       border: none;
       transition: opacity 0.3s ease;
       position: relative;
@@ -842,6 +872,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       height: 40px;
       animation: spin 1s linear infinite;
       margin-bottom: 1rem;
+      border-radius: 50%;
     }
 
     @keyframes spin {
@@ -855,6 +886,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       border-top: 1px solid rgba(82, 179, 192, 0.3);
       backdrop-filter: blur(8px);
       border-radius: 0 0 12px 12px;
+      margin-top: 2rem;
     }
 
     .section-title {
@@ -868,12 +900,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
 
     .sources-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
+    /* MEJORAS EN LAS TARJETAS DE FUENTES */
     .source-card {
       background-color: rgba(13, 29, 31, 0.85);
       border-radius: 12px;
@@ -886,6 +919,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       flex-direction: column;
       justify-content: space-between;
       min-height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .source-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
     }
 
     .source-card:hover {
@@ -895,18 +940,25 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .source-logo {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       margin: 0 auto 1rem;
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--white);
       font-weight: 700;
       font-size: 1.25rem;
       box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      background: white;
+      padding: 5px;
+    }
+    
+    .source-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
     }
 
     .source-name {
@@ -917,12 +969,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     }
 
     .source-price {
-      font-size: 0.875rem;
-      color: var(--gray-light);
+      font-size: 1.1rem;
+      color: var(--white);
       margin: 0;
-      font-weight: 500;
-      text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 0.6px;
+      background: rgba(0, 204, 204, 0.2);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      display: inline-block;
     }
 
     .amenities-modal {
@@ -1049,110 +1104,137 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       background-color: var(--primary-light);
     }
 
-    /* Nuevos estilos para contenedor de colonias */
+    /* Nuevos estilos para la tabla de colonias */
     .colonias-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
       width: 100%;
+      overflow-x: auto;
+      margin-top: 20px;
+      border-radius: var(--border-radius);
+      background-color: rgba(0, 48, 53, 0.8);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(82, 179, 192, 0.4);
     }
 
-    .categoria-card {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .colonias-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
     }
 
-    .categoria-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-header {
-      padding: 18px 20px;
-      color: white;
+    .colonias-table th {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 1rem;
+      text-align: left;
       font-weight: 600;
-      font-size: 1.1rem;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.6px;
     }
 
-    .caliente .card-header {
-      background: linear-gradient(to right, #ff416c, #ff4b2b);
+    .colonias-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(82, 179, 192, 0.3);
+      color: var(--gray-light);
     }
 
-    .tibia .card-header {
-      background: linear-gradient(to right, #36d1dc, #5b86e5);
+    .colonias-table tr:hover td {
+      background-color: rgba(0, 204, 204, 0.15);
+      color: var(--primary-light);
     }
 
-    .fria .card-header {
-      background: linear-gradient(to right, #8e9eab, #eef2f3);
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .colonia-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      align-items: center;
-    }
-
-    .colonia-item:last-child {
+    .colonias-table tr:last-child td {
       border-bottom: none;
     }
 
-    .colonia-item::before {
-      content: "•";
-      color: #3498db;
-      font-weight: bold;
-      margin-right: 10px;
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      text-align: center;
+      min-width: 80px;
     }
 
-    .legend {
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      max-width: 220px;
+    .caliente {
+      background-color: #ffcdd2;
+      color: #c62828;
     }
 
-    .legend h4 {
-      margin-bottom: 10px;
-      color: #2c3e50;
+    .tibia {
+      background-color: #fff9c4;
+      color: #f57f17;
+    }
+
+    .fria {
+      background-color: #c5e1a5;
+      color: #33691e;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 1rem 1rem 0;
+    }
+
+    .table-title {
+      font-size: 1.25rem;
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+    
+    /* NUEVOS ESTILOS AGREGADOS */
+    .map-header {
+      background-color: rgba(13, 29, 31, 0.9);
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid rgba(82, 179, 192, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .map-title {
       font-size: 1.1rem;
+      color: var(--primary-light);
+      font-weight: 600;
     }
-
-    .legend-item {
+    
+    .back-button {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      margin-bottom: 8px;
+      gap: 0.5rem;
+      transition: var(--transition);
     }
-
-    .legend-color {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-right: 10px;
+    
+    .back-button:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
     }
-
-    .caliente-color {
-      background: linear-gradient(to right, #ff416c, #ff4b2b);
+    
+    .colonias-table tr {
+      cursor: pointer;
+      transition: var(--transition);
     }
-
-    .tibia-color {
-      background: linear-gradient(to right, #36d1dc, #5b86e5);
+    
+    .colonias-table tr:hover {
+      background-color: rgba(0, 204, 204, 0.1);
     }
-
-    .fria-color {
-      background: linear-gradient(to right, #8e9eab, #eef2f3);
+    
+    .colonias-table tr.selected {
+      background-color: rgba(0, 204, 204, 0.2);
+      box-shadow: inset 0 0 0 2px var(--primary-light);
     }
 
     @media (max-width: 1024px) {
@@ -1167,6 +1249,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
 
       .map-container {
         min-height: 350px;
+      }
+      
+      .nav-menu {
+        gap: 0.8rem;
+      }
+      
+      .nav-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.8rem;
+        min-width: 120px;
       }
     }
 
@@ -1216,11 +1308,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       }
 
       .location-title {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
       }
 
       .price-value {
-        font-size: 2rem;
+        font-size: 1.8rem;
+      }
+      
+      .map-container {
+        min-height: 400px;
+      }
+      
+      .nav-button {
+        min-width: auto;
+        width: 100%;
       }
     }
 
@@ -1230,11 +1331,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       }
 
       .location-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
 
       .price-value {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
       }
 
       .modal-content {
@@ -1271,6 +1372,23 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
         width: 100%;
         left: 0;
       }
+      
+      .tab-button {
+        padding: 0.8rem;
+        font-size: 0.8rem;
+      }
+      
+      .brand-logo {
+        width: 100px;
+      }
+      
+      .brand-title {
+        font-size: 1.2rem;
+      }
+      
+      .map-container {
+        min-height: 350px;
+      }
     }
   </style>
 </head>
@@ -1284,16 +1402,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       </div>
     </div>
     <nav class="nav-menu">
-      <a href="hon.html" class="nav-button active">
+      <a href="honorarios.html" class="nav-button active">
+        <i class="fas fa-map-marked-alt"></i>
         <span>HONORARIOS</span>
-        <div class="page-indicator"></div>
       </a>
       <div class="nav-separator"></div>
       <a href="menu.html" class="nav-button">
+        <i class="fas fa-bars"></i>
         <span>Menú</span>
       </a>
       <div class="nav-separator"></div>
       <a href="index.html" class="nav-button logout">
+        <i class="fas fa-sign-out-alt"></i>
         <span>Cerrar sesión</span>
       </a>
     </nav>
@@ -1302,25 +1422,31 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
   <main class="main-container">
     <div class="tabs-container">
       <nav class="tabs-nav">
-        <button class="tab-button active" id="specificTab">ESPECÍFICA</button>
-        <button class="tab-button" id="generalTab">GENERAL</button>
+        <button class="tab-button active" id="specificTab">
+          <i class="fas fa-search-location"></i>
+          ESPECÍFICA
+        </button>
+        <button class="tab-button" id="generalTab">
+          <i class="fas fa-globe-americas"></i>
+          GENERAL
+        </button>
       </nav>
       <div class="filters-container" id="filtersContainer">
         <div class="filters-row">
           <div class="filter-group">
-            <label class="filter-label" for="entidadSelect">Entidad</label>
+            <label class="filter-label" for="entidadSelect"><i class="fas fa-city"></i> Entidad</label>
             <select class="filter-select" id="entidadSelect" aria-label="Seleccione una entidad">
               <option value="">Seleccione una entidad</option>
             </select>
           </div>
           <div class="filter-group">
-            <label class="filter-label" for="alcaldiaSelect">Alcaldía</label>
+            <label class="filter-label" for="alcaldiaSelect"><i class="fas fa-building"></i> Alcaldía</label>
             <select class="filter-select" id="alcaldiaSelect" aria-label="Seleccione una alcaldía" disabled>
               <option value="">Seleccione una alcaldía</option>
             </select>
           </div>
           <div class="filter-group">
-            <label class="filter-label" for="tipoSelect">Tipo</label>
+            <label class="filter-label" for="tipoSelect"><i class="fas fa-thermometer-half"></i> Tipo</label>
             <select class="filter-select" id="tipoSelect" aria-label="Seleccione un tipo" disabled>
               <option value="">Seleccione un tipo</option>
               <option value="Caliente">Caliente</option>
@@ -1329,6 +1455,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
             </select>
           </div>
           <button class="filter-button" id="filterButton">
+            <i class="fas fa-filter"></i>
             <span>FILTRAR</span>
           </button>
         </div>
@@ -1336,7 +1463,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       <div class="search-section" id="searchSection">
         <div class="search-wrapper">
           <div class="search-container">
-            <label class="filter-label" for="searchInput">Buscar colonia o alcaldía</label>
+            <label class="filter-label" for="searchInput"><i class="fas fa-search"></i> Buscar colonia o alcaldía</label>
             <div class="search-bar">
               <span class="search-icon" aria-hidden="true">🔍</span>
               <input type="text" class="search-input" id="searchInput" placeholder="Buscar colonia, alcaldía..." aria-label="Buscar colonia o alcaldía">
@@ -1356,12 +1483,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
             <p class="location-subtitle" id="alcaldiaCp">ALCALDÍA, CP</p>
             <p class="location-state" id="estado">ESTADO</p>
           </div>
-          <div class="amenities-section">
-            <button class="amenities-button" id="amenitiesBtn" aria-label="Ver amenidades">AMENIDADES</button>
-          </div>
+          
           <div class="price-section">
             <p class="price-label">Precio por m²</p>
             <p class="price-value" id="precioValue">$--</p>
+          </div>
+          
+          <div class="amenities-section">
+            <button class="amenities-button" id="amenitiesBtn" aria-label="Ver amenidades">
+              <i class="fas fa-map-marker-alt"></i>
+              AMENIDADES
+            </button>
           </div>
         </section>
         <section class="map-section">
@@ -1383,6 +1515,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       <!-- Contenido para pestaña General -->
       <div class="general-content" id="generalContent">
         <section class="map-section large">
+          <div class="map-header" id="mapHeader">
+            <h3 class="map-title">Alcaldía: <span id="currentAlcaldia">-</span></h3>
+            <button class="back-button" id="backToAlcaldiaBtn" style="display:none;">
+              <i class="fas fa-arrow-left"></i>
+              VOLVER A ALCALDÍA
+            </button>
+          </div>
           <div class="map-container">
             <div class="loading-map" id="loadingLargeMap">
               <div class="loading-spinner"></div>
@@ -1397,62 +1536,69 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
           </div>
         </section>
         
-        <!-- Nuevo contenedor para colonias -->
+        <!-- Tabla de colonias -->
         <div class="colonias-container" id="coloniasContainer">
-          <!-- Las colonias se mostrarán aquí -->
-        </div>
-        
-        <!-- Leyenda de categorías -->
-        <div class="legend">
-          <h4>Leyenda de Categorías</h4>
-          <div class="legend-item">
-            <div class="legend-color caliente-color"></div>
-            <span>Caliente</span>
+          <div class="table-header">
+            <h3 class="table-title"><i class="fas fa-list"></i> Colonias encontradas</h3>
           </div>
-          <div class="legend-item">
-            <div class="legend-color tibia-color"></div>
-            <span>Tibia</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color fria-color"></div>
-            <span>Fría</span>
-          </div>
+          <table class="colonias-table" id="coloniasTable">
+            <thead>
+              <tr>
+                <th>Colonia</th>
+                <th>Precio Promedio (m²)</th>
+                <th>Categoría</th>
+              </tr>
+            </thead>
+            <tbody id="coloniasTableBody">
+              <!-- Las colonias se mostrarán aquí dinámicamente -->
+            </tbody>
+          </table>
         </div>
       </div>
       
-      <section class="sources-section">
-        <h2 class="section-title">Fuentes de Información</h2>
+      <section class="sources-section" id="sourcesSection">
+        <h2 class="section-title"><i class="fas fa-database"></i> Fuentes de Información</h2>
         <div class="sources-grid" id="sourcesGrid">
           <div class="source-card" data-source="propiedades">
-            <div class="source-logo">P</div>
+            <div class="source-logo">
+              <img src="img/prop.jpg" alt="Propiedades.com">
+            </div>
             <div class="source-content">
               <h3 class="source-name">Propiedades.com</h3>
               <p class="source-price">$--</p>
             </div>
           </div>
           <div class="source-card" data-source="heyhome">
-            <div class="source-logo">H</div>
+            <div class="source-logo">
+              <img src="img/hey.png" alt="Hey Home">
+            </div>
             <div class="source-content">
               <h3 class="source-name">Hey Home</h3>
               <p class="source-price">$--</p>
             </div>
           </div>
           <div class="source-card" data-source="clau">
-            <div class="source-logo">C</div>
+            <div class="source-logo">
+              <img src="img/clau.png" alt="Clau">
+            </div>
             <div class="source-content">
               <h3 class="source-name">Clau</h3>
               <p class="source-price">$--</p>
             </div>
           </div>
           <div class="source-card" data-source="mudafy">
-            <div class="source-logo">M</div>
+            <div class="source-logo">
+              <img src="img/mud.png" alt="Mudafy">
+            </div>
             <div class="source-content">
               <h3 class="source-name">Mudafy</h3>
               <p class="source-price">$--</p>
             </div>
           </div>
           <div class="source-card" data-source="altaltium">
-            <div class="source-logo">A</div>
+            <div class="source-logo">
+              <img src="img/alta.png" alt="Altaltium">
+            </div>
             <div class="source-content">
               <h3 class="source-name">Altaltium</h3>
               <p class="source-price">$--</p>
@@ -1466,7 +1612,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
   <div class="amenities-modal" id="amenitiesModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Amenidades de la Zona</h3>
+        <h3 class="modal-title"><i class="fas fa-map-marked-alt"></i> Amenidades de la Zona</h3>
         <button class="close-modal" id="closeModal" aria-label="Cerrar modal">×</button>
       </div>
       <ul class="amenities-list" id="amenitiesList"></ul>
@@ -1500,8 +1646,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       sourcesGrid: document.getElementById('sourcesGrid'),
       specificContent: document.getElementById('specificContent'),
       generalContent: document.getElementById('generalContent'),
-      coloniasContainer: document.getElementById('coloniasContainer')
+      coloniasContainer: document.getElementById('coloniasContainer'),
+      coloniasTableBody: document.getElementById('coloniasTableBody'),
+      sourcesSection: document.getElementById('sourcesSection'),
+      currentAlcaldia: document.getElementById('currentAlcaldia'),
+      backToAlcaldiaBtn: document.getElementById('backToAlcaldiaBtn')
     };
+
+    // Variables globales
+    let currentAlcaldia = null;
+    let currentColoniaMarker = null;
 
     async function fetchColonias(query) {
       try {
@@ -1605,11 +1759,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       const formatPrice = (price) => price ? `$${price.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : '$--';
       
       const sources = [
-        { source: 'propiedades', price: colonia.colonia_prom_prop, name: 'Propiedades.com' },
-        { source: 'heyhome', price: colonia.colonia_prom_hey, name: 'Hey Home' },
-        { source: 'clau', price: colonia.colonia_prom_clau, name: 'Clau' },
-        { source: 'mudafy', price: colonia.colonia_prom_mud, name: 'Mudafy' },
-        { source: 'altaltium', price: colonia.colonia_prom_altal, name: 'Altaltium' }
+        { source: 'propiedades', price: colonia.colonia_prom_prop, name: 'Propiedades.com', image: 'img/prop.jpg' },
+        { source: 'heyhome', price: colonia.colonia_prom_hey, name: 'Hey Home', image: 'img/hey.png' },
+        { source: 'clau', price: colonia.colonia_prom_clau, name: 'Clau', image: 'img/clau.png' },
+        { source: 'mudafy', price: colonia.colonia_prom_mud, name: 'Mudafy', image: 'img/mud.png' },
+        { source: 'altaltium', price: colonia.colonia_prom_altal, name: 'Altaltium', image: 'img/alta.png' }
       ];
       
       refs.sourcesGrid.innerHTML = '';
@@ -1620,7 +1774,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
           card.className = 'source-card';
           card.setAttribute('data-source', item.source);
           card.innerHTML = `
-            <div class="source-logo">${item.name.charAt(0)}</div>
+            <div class="source-logo">
+              <img src="${item.image}" alt="${item.name}">
+            </div>
             <div class="source-content">
               <h3 class="source-name">${item.name}</h3>
               <p class="source-price">${formatPrice(item.price)}</p>
@@ -1631,12 +1787,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       });
     }
 
-    function updateMapWithQuery(query, mapElement, loadingElement) {
+    function updateMapWithQuery(query, mapElement, loadingElement, zoom = 13) {
       loadingElement.style.display = 'flex';
       mapElement.style.opacity = '0.5';
       
       const encodedQuery = encodeURIComponent(query);
-      const mapUrl = `https://maps.google.com/maps?q=${encodedQuery}&output=embed`;
+      const mapUrl = `https://maps.google.com/maps?q=${encodedQuery}&z=${zoom}&output=embed`;
       
       mapElement.onload = () => {
         loadingElement.style.display = 'none';
@@ -1713,6 +1869,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       refs.searchSection.style.display = isSpecificTab ? 'block' : 'none';
       refs.specificContent.style.display = isSpecificTab ? 'flex' : 'none';
       refs.generalContent.style.display = isSpecificTab ? 'none' : 'block';
+      refs.sourcesSection.style.display = isSpecificTab ? 'block' : 'none';
     }
 
     async function handleEntidadChange() {
@@ -1753,55 +1910,84 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       // Obtener el nombre de la entidad (estado) seleccionada
       const estadoNombre = refs.entidadSelect.options[refs.entidadSelect.selectedIndex].text;
 
+      // Guardar alcaldía actual
+      currentAlcaldia = alcaldiaNombre;
+      refs.currentAlcaldia.textContent = alcaldiaNombre;
+      
+      // Actualizar el título del mapa
+      document.querySelector('.map-title').textContent = `Alcaldía: ${alcaldiaNombre}`;
+      
       // Actualizar el mapa grande con la alcaldía
-      updateMapWithQuery(`${alcaldiaNombre}, ${estadoNombre}`, refs.largeMapFrame, refs.loadingLargeMap);
+      updateMapWithQuery(`${alcaldiaNombre}, ${estadoNombre}`, refs.largeMapFrame, refs.loadingLargeMap, 13);
 
       // Obtener las colonias filtradas
       const colonias = await fetchColoniasPorFiltros(entidadId, alcaldiaId, tipo);
       if (colonias.length > 0) {
-        // Mostrar colonias en el contenedor
-        showColonias(colonias);
+        // Mostrar colonias en la tabla
+        showColoniasTable(colonias);
       } else {
-        refs.coloniasContainer.innerHTML = '<p>No se encontraron colonias con los filtros seleccionados.</p>';
+        refs.coloniasTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No se encontraron colonias con los filtros seleccionados</td></tr>';
       }
+      
+      // Ocultar botón de volver
+      refs.backToAlcaldiaBtn.style.display = 'none';
     }
 
-    function showColonias(colonias) {
-      const container = refs.coloniasContainer;
-      container.innerHTML = '';
+    function showColoniaOnMap(colonia) {
+      if (!currentAlcaldia) return;
       
-      // Agrupar colonias por categoría
-      const coloniasPorCategoria = {};
+      // Actualizar el mapa con la colonia específica
+      const query = `${colonia.colonia_nombre}, ${currentAlcaldia}`;
+      updateMapWithQuery(query, refs.largeMapFrame, refs.loadingLargeMap, 15);
+      
+      // Mostrar botón para volver a la vista de alcaldía
+      refs.backToAlcaldiaBtn.style.display = 'flex';
+    }
+
+    function showColoniasTable(colonias) {
+      const tableBody = refs.coloniasTableBody;
+      tableBody.innerHTML = '';
+      
       colonias.forEach(colonia => {
-        if (!coloniasPorCategoria[colonia.categoria]) {
-          coloniasPorCategoria[colonia.categoria] = [];
-        }
-        coloniasPorCategoria[colonia.categoria].push(colonia);
-      });
-      
-      // Crear tarjetas por categoría
-      Object.entries(coloniasPorCategoria).forEach(([categoria, colonias]) => {
-        const card = document.createElement('div');
-        card.className = `categoria-card ${categoria.toLowerCase()}`;
+        const row = document.createElement('tr');
+        const categoriaClass = colonia.categoria.toLowerCase();
         
-        const header = document.createElement('div');
-        header.className = 'card-header';
-        header.textContent = `Categoría: ${categoria}`;
+        row.innerHTML = `
+          <td>${colonia.colonia_nombre}</td>
+          <td>${colonia.colonia_promedio ? '$' + colonia.colonia_promedio.toLocaleString('es-MX') : 'N/A'}</td>
+          <td><span class="badge ${categoriaClass}">${colonia.categoria}</span></td>
+        `;
         
-        const body = document.createElement('div');
-        body.className = 'card-body';
-        
-        colonias.forEach(colonia => {
-          const item = document.createElement('div');
-          item.className = 'colonia-item';
-          item.textContent = colonia.colonia_nombre;
-          body.appendChild(item);
+        // Agregar evento click a la fila
+        row.addEventListener('click', () => {
+          // Remover selección previa
+          const selectedRow = tableBody.querySelector('.selected');
+          if (selectedRow) selectedRow.classList.remove('selected');
+          
+          // Seleccionar fila actual
+          row.classList.add('selected');
+          
+          // Mostrar colonia en el mapa
+          showColoniaOnMap(colonia);
         });
         
-        card.appendChild(header);
-        card.appendChild(body);
-        container.appendChild(card);
+        tableBody.appendChild(row);
       });
+    }
+
+    function showAlcaldiaOnMap() {
+      if (!currentAlcaldia) return;
+      
+      // Volver a mostrar la vista de la alcaldía completa
+      const estadoNombre = refs.entidadSelect.options[refs.entidadSelect.selectedIndex].text;
+      updateMapWithQuery(`${currentAlcaldia}, ${estadoNombre}`, refs.largeMapFrame, refs.loadingLargeMap, 13);
+      
+      // Ocultar botón de volver
+      refs.backToAlcaldiaBtn.style.display = 'none';
+      
+      // Quitar selección de fila
+      const selectedRow = refs.coloniasTableBody.querySelector('.selected');
+      if (selectedRow) selectedRow.classList.remove('selected');
     }
 
     async function populateEntidades() {
@@ -1848,6 +2034,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
     refs.entidadSelect.addEventListener('change', handleEntidadChange);
     refs.alcaldiaSelect.addEventListener('change', handleAlcaldiaChange);
     refs.filterButton.addEventListener('click', handleFilterButton);
+    refs.backToAlcaldiaBtn.addEventListener('click', showAlcaldiaOnMap);
 
     async function init() {
       refs.loadingMap.style.display = 'none';
@@ -1856,10 +2043,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'buscarColoniasFiltros') {
       refs.largeMapFrame.style.opacity = '1';
       
       // Inicializar el mapa específico
-      updateMapWithQuery('Paseo de las Palmas 215, Ciudad de México', refs.mapFrame, refs.loadingMap);
+      updateMapWithQuery('Paseo de las Palmas 215, Ciudad de México', refs.mapFrame, refs.loadingMap, 15);
       
       // Inicializar el mapa general con toda la CDMX
-      updateMapWithQuery('Ciudad de México', refs.largeMapFrame, refs.loadingLargeMap);
+      updateMapWithQuery('Ciudad de México', refs.largeMapFrame, refs.loadingLargeMap, 11);
       
       // Cargar entidades al iniciar
       await populateEntidades();
